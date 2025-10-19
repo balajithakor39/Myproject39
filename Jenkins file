@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    environment {
+        PROJECT_NAME = "image-to-text-ai"
+        DOCKER_IMAGE = "image-to-text-ai:latest"
+        GIT_REPO = "https://github.com/balajithakor39/MyProject39.git"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'GitHub થી code ખેંચી રહ્યું છે...'
+                git branch: 'main', url: "${GIT_REPO}"
+            }
+        }
+
+        stage('Build with Maven') {
+            steps {
+                echo 'Maven build ચાલુ છે...'
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Docker image build થઈ રહી છે...'
+                sh 'docker build -t ${DOCKER_IMAGE} .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                echo 'Docker container run થઇ રહ્યું છે...'
+                sh 'docker run --rm ${DOCKER_IMAGE} sample.png || true'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Build અને deployment સફળ!'
+        }
+        failure {
+            echo '❌ Build નિષ્ફળ!'
+        }
+    }
+}
