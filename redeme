@@ -1,0 +1,10 @@
+# MyProject39 - Image to Text Converter (Java + Tesseract)
+
+## આવશ્યકતા
+- JDK 17
+- Maven
+- Docker (જ્યારે container માં ચલાવશો)
+- Git (optional)
+
+## 怎样 build locally (Windows / Linux)
+1. પ્રોજેક્ટ root માં રહો:
